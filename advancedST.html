@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced ScrollTrigger Effects</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #111;
+        color: white;
+      }
+      .section {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        background: #222;
+        border-bottom: 2px solid #333;
+      }
+      /* Parallax Effect */
+      .parallax-container {
+        position: relative;
+        height: 200vh;
+        overflow: hidden;
+        background: #333;
+      }
+      .bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #444;
+      }
+      .fg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #ff5733;
+        padding: 20px 40px;
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        border-radius: 10px;
+      }
+      /* Scroll-Based Text Animation */
+      .text-container {
+        font-size: 40px;
+        font-weight: bold;
+        overflow: hidden;
+        width: 100%;
+        text-align: center;
+      }
+      .char {
+        display: inline-block;
+        opacity: 0;
+      }
+      /* Scrollable Container */
+      .scroll-container {
+        width: 80%;
+        height: 300px;
+        overflow-y: auto;
+        border: 2px solid white;
+        margin: 50px auto;
+        background: #555;
+        padding: 10px;
+      }
+      .scroll-item {
+        height: 100px;
+        background: #ffcc00;
+        margin: 20px;
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: #111;
+      }
+      /* Box for Responsive Animation */
+      .box {
+        width: 100px;
+        height: 100px;
+        background: #00ccff;
+        margin: 50px auto;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="section">Scroll Down</div>
+
+    <!-- Parallax Effect -->
+    <div class="parallax-container">
+      <div class="bg"></div>
+      <div class="fg">Parallax Foreground</div>
+    </div>
+
+    <div class="section">Scroll-Based Text Animation Below</div>
+
+    <!-- Scroll-Based Text Animation -->
+    <div class="text-container">Scroll-triggered Text Animation</div>
+
+    <div class="section">Custom Scroll Snapping Below</div>
+
+    <!-- Custom Scroll Snapping -->
+    <div class="section">Snap Section 1</div>
+    <div class="section">Snap Section 2</div>
+    <div class="section">Snap Section 3</div>
+
+    <div class="section">Nested ScrollTrigger Example Below</div>
+
+    <!-- Nested ScrollTrigger -->
+    <div class="scroll-container">
+      <div class="scroll-item">Item 1</div>
+      <div class="scroll-item">Item 2</div>
+      <div class="scroll-item">Item 3</div>
+    </div>
+
+    <div class="section">Responsive Animation Below</div>
+
+    <!-- Responsive Animation -->
+    <div class="box"></div>
+
+    <div class="section">End of Effects</div>
+
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Parallax Effect
+      gsap.to(".bg", {
+        y: -100,
+        duration: 2,
+        scrollTrigger: {
+          trigger: ".parallax-container",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      gsap.to(".fg", {
+        y: 100,
+        duration: 2,
+        scrollTrigger: {
+          trigger: ".parallax-container",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      // Scroll-Based Text Animation
+      let text = document.querySelector(".text-container");
+      let chars = text.innerText.split("");
+
+      text.innerHTML = "";
+      chars.forEach((char) => {
+        let span = document.createElement("span");
+        span.innerText = char;
+        span.classList.add("char");
+        text.appendChild(span);
+      });
+
+      gsap.to(".char", {
+        opacity: 1,
+        y: -10,
+        duration: 0.5,
+        stagger: 0.05,
+        scrollTrigger: {
+          trigger: ".text-container",
+          start: "top 80%",
+          end: "top 20%",
+          scrub: true,
+        },
+      });
+
+      // Custom Scroll Snapping
+      gsap.to(".section", {
+        scrollTrigger: {
+          trigger: ".section",
+          start: "top top",
+          end: "bottom top",
+          snap: 1,
+        },
+      });
+
+      // Nested ScrollTriggers
+      gsap.utils.toArray(".scroll-item").forEach((item) => {
+        gsap.to(item, {
+          opacity: 1,
+          x: 100,
+          duration: 1.5,
+          scrollTrigger: {
+            trigger: item,
+            start: "top 80%",
+            end: "top 50%",
+            scrub: true,
+          },
+        });
+      });
+
+      // Responsive Animations with MatchMedia
+      gsap.matchMedia().add({
+        "(max-width: 768px)": () => {
+          gsap.to(".box", {
+            x: 100,
+            duration: 1,
+            scrollTrigger: { trigger: ".box", scrub: true },
+          });
+        },
+        "(min-width: 769px)": () => {
+          gsap.to(".box", {
+            x: 300,
+            duration: 1.5,
+            scrollTrigger: { trigger: ".box", scrub: true },
+          });
+        },
+      });
+    </script>
+  </body>
+</html>
