@@ -109,7 +109,7 @@
       }
 
       .scroll-content img {
-        width: 1100px;
+        width: 70vw;
         height: auto;
         opacity: 0;
       }
@@ -210,6 +210,16 @@
         object-fit: cover;
         display: block;
       }
+
+      .slidercontainer {
+        display: flex;
+        width: 400%;
+        height: 100vh;
+      }
+      .slidercontainer .slidersection {
+        flex: 1;
+        background: tomato;
+      }
     </style>
   </head>
   <body>
@@ -277,6 +287,13 @@
           </div>
         </div>
       </section>
+      <section>
+        <div class="slidercontainer">
+          <div class="slidersection">Panel 1</div>
+          <div class="slidersection">Panel 2</div>
+          <div class="slidersection">Panel 3</div>
+        </div>
+      </section>
     </div>
 
     <script>
@@ -300,11 +317,10 @@
       gsap.to(".scroll-section", {
         backgroundColor: "#FF1F54",
         duration: 0.2,
-        opacity: 1,
         scrollTrigger: {
           trigger: ".scroll-section",
           start: "top 50%",
-          end: "bottom 80%",
+          end: "bottom 50%",
           scrub: true,
           toggleActions: "play reverse play reverse",
         },
@@ -422,6 +438,20 @@
             },
           }
         );
+      });
+
+      let sections = gsap.utils.toArray(".slidercontainer .slidersection");
+
+      gsap.to(sections, {
+        xPercent: -100 * (sections.length - 1),
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".slidercontainer",
+          pin: true,
+          scrub: 1,
+          snap: 1 / (sections.length - 1),
+          end: "+=3000",
+        },
       });
     </script>
   </body>
