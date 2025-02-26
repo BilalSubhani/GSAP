@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selected Hover Effects</title>
+    <style>
+      * {
+        cursor: none;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #111;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: Arial, sans-serif;
+        gap: 20px;
+      }
+
+      .cursor {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        background: #e11c4b;
+        border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.3s, width 0.3s, height 0.3s, background 0.3s;
+        z-index: 9999;
+      }
+
+      .hover-effect {
+        position: fixed;
+        width: 100px;
+        height: 100px;
+        border: 2px solid #e5d27f;
+        color: #e5d27f;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        pointer-events: none;
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.3s, background 0.3s, border 0.3s, color 0.3s;
+        z-index: 9998;
+      }
+
+      .special-hover {
+        border: 2px solid #51afe3 !important;
+        color: #51afe3 !important;
+      }
+
+      /* Custom hover area (triggers our cursor effect) */
+      .custom-hover {
+        background: #222;
+        color: white;
+        padding: 20px 40px;
+        font-size: 20px;
+        border: 2px solid #e5d27f;
+        text-align: center;
+        margin: 10px;
+        transition: background 0.3s, color 0.3s;
+      }
+
+      /* Special Case Hover */
+      .special {
+        border-color: #51afe3;
+      }
+
+      /* Default hover area (keeps normal browser hover) */
+      .default-hover {
+        background: #444;
+        color: white;
+        padding: 20px 40px;
+        font-size: 20px;
+        border: 2px solid #e5d27f;
+        text-align: center;
+        margin: 10px;
+        transition: background 0.3s, color 0.3s;
+      }
+
+      .default-hover:hover {
+        background: #e5d27f;
+        color: #111;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="custom-hover">Hover me for Discover effect</div>
+    <div class="custom-hover special">Hover me for Special effect</div>
+    <div class="default-hover">I use default hover</div>
+    <div class="default-hover">I also use default hover</div>
+
+    <div class="cursor"></div>
+    <div class="hover-effect">Discover</div>
+
+    <script>
+      const cursor = document.querySelector(".cursor");
+      const hoverEffect = document.querySelector(".hover-effect");
+      const customHoverAreas = document.querySelectorAll(".custom-hover");
+
+      document.addEventListener("mousemove", (e) => {
+        cursor.style.top = `${e.clientY}px`;
+        cursor.style.left = `${e.clientX}px`;
+        hoverEffect.style.top = `${e.clientY}px`;
+        hoverEffect.style.left = `${e.clientX}px`;
+      });
+
+      customHoverAreas.forEach((area) => {
+        area.addEventListener("mouseenter", () => {
+          hoverEffect.style.transform = "translate(-50%, -50%) scale(1)";
+          cursor.style.opacity = "0";
+
+          if (area.classList.contains("special")) {
+            hoverEffect.classList.add("special-hover");
+          }
+        });
+
+        area.addEventListener("mouseleave", () => {
+          hoverEffect.style.transform = "translate(-50%, -50%) scale(0)";
+          cursor.style.opacity = "1"; // Show cursor again when leaving custom areas
+          hoverEffect.classList.remove("special-hover");
+        });
+      });
+    </script>
+  </body>
+</html>
