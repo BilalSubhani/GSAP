@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Experience-First Brand-Builders</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+
+      body {
+        overflow-x: hidden;
+        background-color: #fff;
+      }
+
+      .section {
+        position: relative;
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .section_colour {
+        background-color: #fff;
+      }
+
+      .grid_wrapper {
+        width: 100%;
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 3rem;
+        position: relative;
+      }
+
+      .inner_grid_wide {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+      }
+
+      .align_center {
+        align-items: center;
+      }
+
+      .column {
+        position: relative;
+      }
+
+      .col_5 {
+        width: 35%;
+        padding-right: 2rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      .col_7 {
+        width: 100%;
+      }
+
+      .text_col {
+        position: relative;
+      }
+
+      .image_col {
+        position: absolute;
+        right: 0;
+        width: 60%;
+        height: 60vh;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      .block_title {
+        margin-bottom: 2rem;
+      }
+
+      .line_roll {
+        font-size: clamp(2.5rem, 4.5vw, 4.5rem);
+        line-height: 1.1;
+        color: #000;
+        font-weight: normal;
+        white-space: nowrap;
+        position: relative;
+        display: block;
+        height: 1.2em;
+      }
+
+      .line_roll strong {
+        position: relative;
+        display: block;
+      }
+
+      .top_line_margin {
+        margin-bottom: 0.5rem;
+      }
+
+      .block_text p {
+        font-size: clamp(1rem, 1.2vw, 1.2rem);
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        color: #333;
+      }
+
+      .image_cover {
+        width: 80%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      @media (max-width: 992px) {
+        .inner_grid_wide {
+          flex-direction: column;
+        }
+
+        .col_5 {
+          width: 100%;
+        }
+
+        .image_col {
+          position: relative;
+          width: 100%;
+        }
+
+        .line_roll {
+          font-size: clamp(2rem, 8vw, 3rem);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section data-color="#fff" class="section section_colour image_and_text">
+      <div class="grid_wrapper">
+        <div class="inner_grid_wide align_center">
+          <div class="column col_5 text_col text_col_left">
+            <div class="block_title">
+              <h4 class="line_roll line_1 top_line_margin">
+                <strong>experience-first</strong>
+              </h4>
+              <h4 class="line_roll line_2" style="margin-top: -1rem">
+                <strong>brand-builders</strong>
+              </h4>
+            </div>
+            <div class="block_text left slide_ltr">
+              <p>
+                We believe every interaction between brand and audience is an
+                opportunity to create an experience.
+              </p>
+              <p>
+                So we think <em>experience-first, </em>
+                building brands through shared experiences that activate human
+                connections.
+              </p>
+            </div>
+          </div>
+          <div class="column col_7 image_col image_col_right">
+            <picture>
+              <img
+                class="image_cover image_slide_ltr"
+                src="https://experiencesbypeople.com/wp-content/uploads/2022/10/ExperienceFirstBrandBuilders-2.jpg"
+                alt="Skateboarder performing trick on colorful skate park with camera person"
+                width="1350"
+                height="1001"
+              />
+            </picture>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        gsap.set(".line_1 strong", {
+          translateY: "100%",
+          opacity: 1,
+        });
+
+        gsap.set(".line_2 strong", {
+          translateY: "100%",
+          opacity: 1,
+        });
+
+        gsap.set(".block_text", {
+          translateX: "-100%",
+          opacity: 0,
+        });
+
+        gsap.set(".image_cover", {
+          translateX: "-100%",
+        });
+
+        const experienceTimeline = gsap.timeline({
+          defaults: {
+            ease: "power3.out",
+            duration: 1.2,
+          },
+        });
+
+        experienceTimeline
+          .to(".line_2 strong", {
+            translateY: "0%",
+            duration: 1,
+          })
+          .to(
+            ".line_1 strong",
+            {
+              translateY: "0%",
+              duration: 1,
+            },
+            "-=0.7"
+          )
+          .to(
+            ".block_text",
+            {
+              translateX: "0%",
+              opacity: 1,
+              duration: 1,
+            },
+            "-=0.5"
+          )
+          .to(
+            ".image_cover",
+            {
+              translateX: "0%",
+              duration: 1.2,
+            },
+            "-=0.8"
+          );
+      });
+    </script>
+  </body>
+</html>
