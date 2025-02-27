@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Case Studies Carousel</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        overflow-x: hidden;
+      }
+
+      .case_studies_carousel {
+        position: relative;
+        width: 300vw;
+        display: flex;
+        background-color: #173084;
+      }
+
+      .study_wrapper {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+      }
+
+      .study_image img {
+        width: 45vw;
+        height: 60vh;
+        margin-left: 250px;
+      }
+
+      .study_title {
+        position: absolute;
+        top: 40%;
+        left: 40%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: white;
+        width: 1200px;
+      }
+
+      .black {
+        font-weight: bold;
+        font-size: 6vw;
+      }
+
+      .thin {
+        font-size: 6vw;
+        font-weight: 300;
+      }
+
+      .carousel_counter {
+        position: fixed;
+        bottom: 80px;
+        left: 80px;
+        display: flex;
+        gap: 5px;
+        z-index: 100;
+      }
+
+      .counter_marker {
+        width: 42px;
+        height: 2px;
+        border-radius: 2px;
+        background-color: white;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="case_studies_carousel">
+      <div data-bgcolor="#173084" class="study_wrapper">
+        <div class="study_image">
+          <img src="../assets/redbull.webp" alt="Slide 1" />
+        </div>
+        <div class="study_title">
+          <h2 class="black">Red Bull Soap Box</h2>
+          <h2 class="thin">Red Bull</h2>
+        </div>
+      </div>
+      <div data-bgcolor="#173084" class="study_wrapper">
+        <div class="study_image">
+          <img src="../assets/scottish.webp" alt="Slide 2" />
+        </div>
+        <div class="study_title">
+          <h2 class="black">Genesis Scottish Open</h2>
+          <h2 class="thin">DP World Tour</h2>
+        </div>
+      </div>
+      <div data-bgcolor="#13181B" class="study_wrapper">
+        <div class="study_image">
+          <img src="../assets/zia.webp" alt="Slide 3" />
+        </div>
+        <div class="study_title">
+          <h2 class="black">ZIA Launch</h2>
+          <h2 class="thin">ADAC</h2>
+        </div>
+      </div>
+    </section>
+
+    <div class="carousel_counter">
+      <div id="marker1" div-bgcolor="#fcd945" class="counter_marker"></div>
+      <div id="marker2" div-bgcolor="#fcd945" class="counter_marker"></div>
+      <div id="marker3" div-bgcolor="#58c3ff" class="counter_marker"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+
+      const sections = document.querySelectorAll(".study_wrapper");
+      const carousel = document.querySelector(".case_studies_carousel");
+      const markers = document.querySelectorAll(".counter_marker");
+
+      gsap.to(sections, {
+        xPercent: -100 * (sections.length - 1),
+        ease: "none",
+        scrollTrigger: {
+          trigger: carousel,
+          start: "top top",
+          end: () => `+=${window.innerWidth * (sections.length - 1)}`,
+          pin: true,
+          scrub: 1,
+          snap: {
+            snapTo: 1 / (sections.length - 1),
+            duration: { min: 0.2, max: 0.3 },
+            ease: "power1.inOut",
+          },
+          onUpdate: (self) => {
+            const activeIndex = Math.round(
+              self.progress * (sections.length - 1)
+            );
+            const activeColor = sections[activeIndex].dataset.bgcolor;
+
+            gsap.to(carousel, {
+              backgroundColor: activeColor,
+              duration: 0.5,
+            });
+
+            markers.forEach((marker) => {
+              marker.style.backgroundColor = "white";
+            });
+
+            markers[activeIndex].style.backgroundColor =
+              markers[activeIndex].getAttribute("div-bgcolor");
+          },
+        },
+      });
+
+      markers.forEach((marker, index) => {
+        marker.addEventListener("click", () => {
+          gsap.to(window, {
+            scrollTo: window.innerWidth * index,
+            duration: 1,
+            ease: "power2.inOut",
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -102,6 +102,14 @@
         justify-content: center;
       }
 
+      .bg-pink {
+        background-color: #ff1f54 !important;
+      }
+
+      .bg-white {
+        background-color: #fff !important;
+      }
+
       .scroll-content {
         display: flex;
         flex-direction: column;
@@ -211,14 +219,64 @@
         display: block;
       }
 
-      .slidercontainer {
+      .case_studies_carousel {
+        position: relative;
+        width: 300vw;
         display: flex;
-        width: 400%;
-        height: 100vh;
+        background-color: #173084;
       }
-      .slidercontainer .slidersection {
-        flex: 1;
-        background: tomato;
+
+      .study_wrapper {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+      }
+
+      .study_image img {
+        width: 45vw;
+        height: 60vh;
+        margin-left: 250px;
+      }
+
+      .study_title {
+        position: absolute;
+        top: 40%;
+        left: 40%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: white;
+        width: 1200px;
+      }
+
+      .black {
+        font-weight: bold;
+        font-size: 6vw;
+      }
+
+      .thin {
+        font-size: 6vw;
+        font-weight: 200;
+      }
+
+      .carousel_counter {
+        position: fixed;
+        bottom: 80px;
+        left: 80px;
+        display: flex;
+        gap: 5px;
+        z-index: 100;
+      }
+
+      .counter_marker {
+        width: 42px;
+        height: 2px;
+        border-radius: 2px;
+        background-color: white;
+        transition: background-color 0.3s ease, transform 0.3s ease;
       }
     </style>
   </head>
@@ -287,13 +345,42 @@
           </div>
         </div>
       </section>
-      <section>
-        <div class="slidercontainer">
-          <div class="slidersection">Panel 1</div>
-          <div class="slidersection">Panel 2</div>
-          <div class="slidersection">Panel 3</div>
+
+      <section class="case_studies_carousel">
+        <div data-bgcolor="#173084" class="study_wrapper">
+          <div class="study_image">
+            <img src="../assets/redbull.webp" alt="Slide 1" />
+          </div>
+          <div class="study_title">
+            <h2 class="black">Red Bull Soap Box</h2>
+            <h2 class="thin" style="color: #fcd945">Red Bull</h2>
+          </div>
+        </div>
+        <div data-bgcolor="#173084" class="study_wrapper">
+          <div class="study_image">
+            <img src="../assets/scottish.webp" alt="Slide 2" />
+          </div>
+          <div class="study_title">
+            <h2 class="black">Genesis Scottish Open</h2>
+            <h2 class="thin" style="color: #fcd945">DP World Tour</h2>
+          </div>
+        </div>
+        <div data-bgcolor="#13181B" class="study_wrapper">
+          <div class="study_image">
+            <img src="../assets/zia.webp" alt="Slide 3" />
+          </div>
+          <div class="study_title">
+            <h2 class="black">ZIA Launch</h2>
+            <h2 class="thin" style="color: #58c3ff">ADAC</h2>
+          </div>
         </div>
       </section>
+
+      <div class="carousel_counter">
+        <div id="marker1" div-bgcolor="#fcd945" class="counter_marker"></div>
+        <div id="marker2" div-bgcolor="#fcd945" class="counter_marker"></div>
+        <div id="marker3" div-bgcolor="#58c3ff" class="counter_marker"></div>
+      </div>
     </div>
 
     <script>
@@ -314,15 +401,25 @@
 
       gsap.registerPlugin(ScrollTrigger);
 
+      gsap.registerPlugin(ScrollTrigger);
+
       gsap.to(".scroll-section", {
-        backgroundColor: "#FF1F54",
-        duration: 0.2,
         scrollTrigger: {
           trigger: ".scroll-section",
           start: "top 50%",
           end: "bottom 50%",
-          scrub: true,
-          toggleActions: "play reverse play reverse",
+          toggleClass: { targets: ".scroll-section", className: "bg-pink" },
+          toggleActions: "play none reverse none",
+        },
+      });
+
+      gsap.to(".scroll-section", {
+        scrollTrigger: {
+          trigger: ".scroll-section",
+          start: "bottom 50%",
+          end: "top 50%",
+          toggleClass: { targets: ".scroll-section", className: "bg-white" },
+          toggleActions: "play none reverse none",
         },
       });
 
@@ -440,18 +537,83 @@
         );
       });
 
-      let sections = gsap.utils.toArray(".slidercontainer .slidersection");
+      const sliderSections = document.querySelectorAll(".study_wrapper");
+      const carousel = document.querySelector(".case_studies_carousel");
+      const markers = document.querySelectorAll(".counter_marker");
+      const sliderIndicator = document.querySelector(".carousel_counter");
+      const body = document.body;
 
-      gsap.to(sections, {
-        xPercent: -100 * (sections.length - 1),
+      gsap.to(sliderSections, {
+        xPercent: -100 * (sliderSections.length - 1),
         ease: "none",
         scrollTrigger: {
-          trigger: ".slidercontainer",
+          trigger: carousel,
+          start: "top top",
+          end: () => `+=${window.innerWidth * (sliderSections.length - 1)}`,
           pin: true,
           scrub: 1,
-          snap: 1 / (sections.length - 1),
-          end: "+=3000",
+          snap: {
+            snapTo: 1 / (sliderSections.length - 1),
+            duration: { min: 0.2, max: 0.3 },
+            ease: "power1.inOut",
+          },
+          onUpdate: (self) => {
+            const activeIndex = Math.round(
+              self.progress * (sliderSections.length - 1)
+            );
+            const activeColor = sliderSections[activeIndex].dataset.bgcolor;
+
+            gsap.to(carousel, { backgroundColor: activeColor, duration: 0.5 });
+
+            gsap.to(body, { backgroundColor: activeColor, duration: 0.5 });
+
+            markers.forEach((marker) => {
+              marker.style.backgroundColor = "white";
+            });
+
+            markers[activeIndex].style.backgroundColor =
+              markers[activeIndex].getAttribute("div-bgcolor");
+          },
         },
+      });
+
+      gsap.fromTo(
+        sliderIndicator,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          scrollTrigger: {
+            trigger: carousel,
+            start: "top 50%",
+            end: () => `+=${window.innerWidth * (sliderSections.length - 1)}`,
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      sliderSections.forEach((section) => {
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top 50%",
+          end: "bottom 50%",
+          onEnter: () =>
+            gsap.to(body, {
+              backgroundColor: section.dataset.bgcolor,
+              duration: 0.5,
+            }),
+          onLeaveBack: () =>
+            gsap.to(body, { backgroundColor: "#FFF", duration: 0.5 }),
+        });
+      });
+
+      markers.forEach((marker, index) => {
+        marker.addEventListener("click", () => {
+          gsap.to(window, {
+            scrollTo: window.innerWidth * index,
+            duration: 1,
+            ease: "power2.inOut",
+          });
+        });
       });
     </script>
   </body>
