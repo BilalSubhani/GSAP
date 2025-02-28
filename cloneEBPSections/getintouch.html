@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Section</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+      }
+
+      body {
+        background-color: white;
+        color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .contact-container {
+        max-width: 1200px;
+        width: 100%;
+      }
+
+      .get-in-touch {
+        font-size: 5rem;
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 0;
+        opacity: 0;
+        transform: translateY(50px);
+      }
+
+      .email {
+        font-size: 3.5rem;
+        color: #ff5a7a;
+        font-weight: 300;
+        margin-top: 0.5rem;
+        opacity: 0;
+        transform: translateY(50px);
+      }
+
+      .divider {
+        width: 50px;
+        height: 3px;
+        background-color: #0bebd1;
+        margin: 50px 0;
+        opacity: 0;
+        transform: translateY(50px);
+      }
+
+      .explore-link {
+        display: inline-flex;
+        align-items: center;
+        font-size: 1.1rem;
+        text-decoration: none;
+        color: #000;
+        opacity: 0;
+        transform: translateY(50px);
+      }
+
+      .explore-link .arrow {
+        margin-left: 10px;
+        font-size: 1.2rem;
+      }
+
+      @media (max-width: 768px) {
+        .get-in-touch {
+          font-size: 3rem;
+        }
+
+        .email {
+          font-size: 2rem;
+        }
+
+        .divider {
+          margin: 30px 0;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .get-in-touch {
+          font-size: 2.5rem;
+        }
+
+        .email {
+          font-size: 1.5rem;
+        }
+
+        .divider {
+          margin: 20px 0;
+          width: 30px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="contact-container">
+      <h2 class="get-in-touch">get in touch</h2>
+      <div class="email">hi@peopleandco.com</div>
+      <div class="divider"></div>
+      <a href="#" class="explore-link">
+        Explore Case Studies <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Create a timeline
+        const tl = gsap.timeline({
+          defaults: {
+            duration: 1,
+            ease: "power3.out",
+          },
+        });
+
+        // Add animations to the timeline with staggered timing
+        tl.to(".get-in-touch", {
+          y: 0,
+          opacity: 1,
+          delay: 0.5,
+        })
+          .to(
+            ".email",
+            {
+              y: 0,
+              opacity: 1,
+            },
+            "-=0.7"
+          )
+          .to(
+            ".divider",
+            {
+              y: 0,
+              opacity: 1,
+            },
+            "-=0.7"
+          )
+          .to(
+            ".explore-link",
+            {
+              y: 0,
+              opacity: 1,
+            },
+            "-=0.7"
+          );
+      });
+    </script>
+  </body>
+</html>

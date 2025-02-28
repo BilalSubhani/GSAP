@@ -83,7 +83,9 @@
         position: relative;
         width: 100vw;
         height: 100vh;
-        overflow: hidden;
+        background-image: url("../assets/herobg.jpg");
+        background-size: cover;
+        background-position: center;
       }
 
       .full_embed_wrapper {
@@ -497,7 +499,15 @@
 
       gsap.registerPlugin(ScrollTrigger);
 
-      gsap.registerPlugin(ScrollTrigger);
+      gsap.to(".word_roll", {
+        scrollTrigger: {
+          trigger: ".word_roll",
+          start: "top 0%",
+          end: "bottom 50%",
+          toggleClass: { targets: ".word_roll", className: "bg-white" },
+          toggleActions: "play none none none",
+        },
+      });
 
       gsap.to(".scroll-section", {
         scrollTrigger: {
